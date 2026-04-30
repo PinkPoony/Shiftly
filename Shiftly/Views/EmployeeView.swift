@@ -1,9 +1,12 @@
 import SwiftUI
 import SwiftData
 
-struct EmployeesView: View {
+struct EmployeeView: View {
     @Query var employees: [Employee]
     @Environment(\.modelContext) var modelContext
+    
+    @State private var showingAddEmployee = false
+    @State private var selectedEmployee: Employee?
     
     var body: some View {
         NavigationStack {
@@ -21,11 +24,27 @@ struct EmployeesView: View {
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
+                        .onTapGesture {
+                            selectedEmployee = employee
+                        }
                     }
                 }
                 .onDelete(perform: deleteEmployee)
             }
             .navigationTitle("Сотрудники")
+            .toolbar {
+                Button {
+                    showingAddEmployee = true
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+            .sheet(isPresented: $showingAddEmployee) {
+                AddEmployeeView()
+            }
+            .sheet(item: $selectedEmployee) { employee in
+                EditEmployeeView(employee: employee)
+            }
         }
     }
     

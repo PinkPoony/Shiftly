@@ -7,7 +7,7 @@ enum Role: String, Codable, CaseIterable {
     
     var colorHex: String {
         switch self {
-        case .baker: return "#f5a42a"
+        case .baker: return "#fcc11c"
         case .cashier: return "#ed761a"
         }
     }
