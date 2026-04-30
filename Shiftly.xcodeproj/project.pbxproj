@@ -45,6 +45,11 @@
 			path = ShiftlyUITests;
 			sourceTree = "<group>";
 		};
+		7FAA3CD22FA38894004EF226 /* Extensions */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +84,7 @@
 				7FA847872FA2880F00C7F511 /* ShiftlyTests */,
 				7FA847912FA2880F00C7F511 /* ShiftlyUITests */,
 				7FA847762FA2880D00C7F511 /* Products */,
+				7FAA3CD22FA38894004EF226 /* Extensions */,
 			);
 			sourceTree = "<group>";
 		};
@@ -109,6 +115,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				7FA847772FA2880D00C7F511 /* Shiftly */,
+				7FAA3CD22FA38894004EF226 /* Extensions */,
 			);
 			name = Shiftly;
 			packageProductDependencies = (
