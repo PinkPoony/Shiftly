@@ -31,15 +31,31 @@ struct ScheduleView: View {
             }
             .navigationTitle("Расписание")
             .toolbar {
-                Button {
-                    showingAddShift = true
-                } label: {
-                    Image(systemName: "plus")
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingAddShift = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+                
+                ToolbarItem(placement: .topBarLeading) {
+                    ShareLink(
+                        item: ExportHelper.weekScheduleText(shifts: shiftsForCurrentWeek)
+                    ) {
+                        Image(systemName: "square.and.arrow.up")
+                    }
                 }
             }
             .sheet(isPresented: $showingAddShift) {
                 AddShiftView()
             }
+        }
+    }
+    
+    var shiftsForCurrentWeek: [Shift] {
+        currentWeekDates.flatMap { date in
+            shiftsFor(date: date)
         }
     }
     
