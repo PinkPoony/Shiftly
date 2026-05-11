@@ -17,20 +17,23 @@ struct ScheduleView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                weekSwitcher
-                
-                ScrollView {
-                    VStack(spacing: 16) {
-                        ForEach(currentWeekDates, id: \.self) { date in
-                            DayView(date: date, shifts: shiftsFor(date: date))
-                        }
+            ScrollView {
+                VStack(spacing: 16) {
+                    ForEach(currentWeekDates, id: \.self) { date in
+                        DayView(date: date, shifts: shiftsFor(date: date))
                     }
-                    .padding()
                 }
+                .padding()
             }
             .navigationTitle("Расписание")
+            .navigationBarTitleDisplayMode(.large)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    ShareLink(item: ExportHelper.weekScheduleText(shifts: shiftsForCurrentWeek)) {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                }
+                
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showingAddShift = true
@@ -39,11 +42,17 @@ struct ScheduleView: View {
                     }
                 }
                 
-                ToolbarItem(placement: .topBarLeading) {
-                    ShareLink(
-                        item: ExportHelper.weekScheduleText(shifts: shiftsForCurrentWeek)
-                    ) {
-                        Image(systemName: "square.and.arrow.up")
+                ToolbarItem(placement: .principal) {
+                    HStack(spacing: 12) {
+                        Button { weekOffset -= 1 } label: {
+                            Image(systemName: "chevron.left")
+                        }
+                        Text(weekRangeText)
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                        Button { weekOffset += 1 } label: {
+                            Image(systemName: "chevron.right")
+                        }
                     }
                 }
             }
