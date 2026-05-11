@@ -40,6 +40,5 @@ open Shiftly.xcodeproj
 ```
 
 ## Автор
-
-Тимофей — начинающий iOS разработчик  
+ 
 GitHub: [@PinkPoony](https://github.com/PinkPoony)
