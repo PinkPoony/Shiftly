@@ -20,6 +20,13 @@ struct EditShiftView: View {
         }
     }
     
+    var timeRange: ClosedRange<Date> {
+        let calendar = Calendar.current
+        let start = calendar.date(bySettingHour: 5, minute: 0, second: 0, of: Date())!
+        let end = calendar.date(bySettingHour: 22, minute: 0, second: 0, of: Date())!
+        return start...end
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -34,8 +41,15 @@ struct EditShiftView: View {
                 
                 Section("Дата и время") {
                     DatePicker("Дата", selection: $shift.date, displayedComponents: .date)
-                    DatePicker("Начало", selection: $shift.startTime, displayedComponents: .hourAndMinute)
-                    DatePicker("Конец", selection: $shift.endTime, displayedComponents: .hourAndMinute)
+                    DatePicker("Начало", selection: $shift.startTime, in: timeRange, displayedComponents: .hourAndMinute)
+                        .onChange(of: shift.startTime) {
+                            shift.startTime = roundToNearest15(shift.startTime)
+                        }
+
+                    DatePicker("Конец", selection: $shift.endTime, in: timeRange, displayedComponents: .hourAndMinute)
+                        .onChange(of: shift.endTime) {
+                            shift.endTime = roundToNearest15(shift.endTime)
+                        }
                 }
                 
                 if hasConflict {
@@ -73,5 +87,12 @@ struct EditShiftView: View {
                 Button("Отмена", role: .cancel) {}
             }
         }
+    }
+    
+    func roundToNearest15(_ date: Date) -> Date {
+        let calendar = Calendar.current
+        let minutes = calendar.component(.minute, from: date)
+        let rounded = (minutes + 7) / 15 * 15
+        return calendar.date(bySetting: .minute, value: rounded % 60, of: date) ?? date
     }
 }
