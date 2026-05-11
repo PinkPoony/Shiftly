@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct DayView: View {
+    @State private var selectedShift: Shift?
     let date: Date
     let shifts: [Shift]
     
@@ -58,6 +59,9 @@ struct DayView: View {
                     .padding(10)
                     .background(Color(hex: shift.employee?.role.colorHex ?? "#888888").opacity(0.08))
                     .cornerRadius(10)
+                    .onTapGesture {
+                        selectedShift = shift
+                    }
                 }
             }
         }
@@ -66,5 +70,8 @@ struct DayView: View {
         .background(.background)
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.04), radius: 4, x: 0, y: 2)
+        .sheet(item: $selectedShift) { shift in
+            EditShiftView(shift: shift)
+        }
     }
 }
