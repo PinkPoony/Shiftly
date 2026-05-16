@@ -102,15 +102,10 @@ struct AddShiftView: View {
                 }
                 
                 Section("Время") {
-                    DatePicker("Начало", selection: $startTime, in: timeRange, displayedComponents: .hourAndMinute)
-                        .onChange(of: startTime) {
-                            startTime = roundToNearest15(startTime)
-                        }
-
-                    DatePicker("Конец", selection: $endTime, in: timeRange, displayedComponents: .hourAndMinute)
-                        .onChange(of: endTime) {
-                            endTime = roundToNearest15(endTime)
-                        }
+                    TimePickerView(time: $startTime, label: "Начало")
+                    Divider()
+                        .padding(.vertical, 4)
+                    TimePickerView(time: $endTime, label: "Конец")
                 }
                 
                 if hasConflict {
@@ -144,13 +139,6 @@ struct AddShiftView: View {
         return "\(formatter.string(from: start)) — \(formatter.string(from: end))"
     }
     
-    var timeRange: ClosedRange<Date> {
-        let calendar = Calendar.current
-        let start = calendar.date(bySettingHour: 5, minute: 0, second: 0, of: Date())!
-        let end = calendar.date(bySettingHour: 22, minute: 0, second: 0, of: Date())!
-        return start...end
-    }
-    
     func addShifts() {
         guard let employee = selectedEmployee else { return }
         for date in selectedDays {
@@ -160,10 +148,4 @@ struct AddShiftView: View {
         dismiss()
     }
     
-    func roundToNearest15(_ date: Date) -> Date {
-        let calendar = Calendar.current
-        let minutes = calendar.component(.minute, from: date)
-        let rounded = (minutes + 7) / 15 * 15
-        return calendar.date(bySetting: .minute, value: rounded % 60, of: date) ?? date
-    }
 }
